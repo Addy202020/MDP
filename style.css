@@ -1,0 +1,128 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'YourFont', sans-serif;
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Landing Page */
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px; /* Allow some space on small screens */
+  height: 100vh;
+  text-align: center;
+}
+
+.logo {
+  width: 100%;
+  max-width: 40vw;   /* Scale logo relative to screen width */
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.brand-name {
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  font-family: 'YourFont', sans-serif;
+}
+
+.landing.scrolled .brand-name {
+  opacity: 1;
+}
+
+/* Inspire Section */
+.inspire {
+  padding: 60px 20px;
+  background: #111;
+}
+
+.inspire h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* Gallery Masonry Layout */
+.gallery {
+  column-count: 6;
+  column-gap: 15px;
+  padding: 10px;
+}
+
+.img-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: visible; /* Allow zoom to extend outside the box */
+}
+
+.gallery-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+  position: relative;
+}
+
+/* Blur others on hover */
+.gallery:hover .gallery-img:not(:hover) {
+  filter: blur(5px);
+  transform: scale(0.95);
+  opacity: 0.6;
+}
+
+/* Zoom and bring to front */
+.gallery-img:hover {
+  transform: scale(1.07);
+  z-index: 10;
+  filter: none;
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    max-width: 90vw;
+  }
+}
+
+/* Responsive Layout */
+@media (max-width: 2500px) {
+  .gallery {
+    column-count: 5;
+  }
+}
+@media (max-width: 2000px) {
+  .gallery {
+    column-count: 4;
+  }
+}
+@media (max-width: 1500px) {
+  .gallery {
+    column-count: 3;
+  }
+}
+@media (max-width: 900px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+@media (max-width: 700px) {
+  .gallery {
+    column-count: 1;
+  }
+}
