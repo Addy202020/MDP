@@ -55,7 +55,7 @@ body {
 
 /* Gallery Masonry Layout */
 .gallery {
-  column-count: 6;
+  column-count: 7;
   column-gap: 15px;
   padding: 10px;
 }
@@ -101,27 +101,27 @@ body {
 }
 
 /* Responsive Layout */
-@media (max-width: 2500px) {
+@media (max-width: 1920px) {
   .gallery {
-    column-count: 5;
-  }
-}
-@media (max-width: 2000px) {
-  .gallery {
-    column-count: 4;
+    column-count: 6;
   }
 }
 @media (max-width: 1500px) {
   .gallery {
-    column-count: 3;
+    column-count: 5;
   }
 }
 @media (max-width: 900px) {
   .gallery {
+    column-count: 3;
+  }
+}
+@media (max-width: 500px) {
+  .gallery {
     column-count: 2;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 350px) {
   .gallery {
     column-count: 1;
   }
