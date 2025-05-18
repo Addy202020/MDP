@@ -32,6 +32,56 @@ imageNames.forEach((imageName) => {
   img.loading = 'lazy';
   img.classList.add('gallery-img');
 
+let lastScrollTop = 0;
+
+const logo = document.querySelector('.logo');
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+
+  // Set the scroll range (0 to 200px)
+  const maxScroll = 500;
+
+  // Calculate how far through the range we are (0 = top, 1 = hidden)
+  const progress = Math.min(1, scrollY / maxScroll);
+
+  // Calculate opacity and vertical shift
+  const opacity = 1 - progress;
+  const translateY = -progress * 40; // Move up to -40px
+
+  logo.style.opacity = opacity;
+  logo.style.transform = `translateY(${translateY}px)`;
+});
+
+const brandName = document.querySelector('.brand-name');
+let lastScrollY = 0;
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.scrollY;
+
+  // Toggle visibility class
+  if (currentScroll > 80) {
+    brandName.classList.add('visible');
+  } else {
+    brandName.classList.remove('visible');
+  }
+
+  // Animate font size from 2rem to 4rem
+  const minFont = 2;
+  const maxFont = 5;
+  const fontSize = Math.min(maxFont, Math.max(minFont, minFont + currentScroll / 150));
+
+  // Animate letter spacing (kerning) from 0.05em to 0.3em
+  const minSpacing = 0.05;
+  const maxSpacing = 0.52;
+  const spacing = Math.min(maxSpacing, Math.max(minSpacing, minSpacing + currentScroll / 500));
+
+  brandName.style.fontSize = `${fontSize}rem`;
+  brandName.style.letterSpacing = `${spacing}em`;
+
+  lastScrollY = currentScroll;
+});
+
   wrapper.appendChild(img);
   gallery.appendChild(wrapper);
 });

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://addy202020.github.io/MDP/sitemap.xml

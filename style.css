@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: 'YourFont', sans-serif;
+  font-family: 'BankGothic', sans-serif;
   background: #000;
   color: #fff;
   overflow-x: hidden;
@@ -28,17 +28,48 @@ body {
   max-width: 40vw;   /* Scale logo relative to screen width */
   height: auto;
   margin-bottom: 20px;
+  position: relative;
+  transition: none; /* Remove transition so JS controls animation */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.logo-shine {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.logo {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+}
+
+@font-face {
+  font-family: 'BankGothic';
+  src: url('fonts/BankGothic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 .brand-name {
   font-size: 2rem;
+  letter-spacing: 0.05em;
   opacity: 0;
-  transition: opacity 2s ease-in-out;
-  font-family: 'YourFont', sans-serif;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  font-family: 'BankGothic', sans-serif;
 }
 
-.landing.scrolled .brand-name {
+.brand-name.visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 /* Inspire Section */
