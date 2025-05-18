@@ -47,34 +47,43 @@ window.addEventListener('scroll', () => {
   logo.style.transform = `translateY(${translateY}px)`;
 });
 
-
 const brandName = document.querySelector('.brand-name');
+
 let lastScrollY = 0;
+let ticking = false;
 
-window.addEventListener('scroll', () => {
-  const currentScroll = window.scrollY;
-
-  // Toggle visibility class
-  if (currentScroll > 80) {
+function updateBrandName(scrollY) {
+  // Toggle visibility
+  if (scrollY > 80) {
     brandName.classList.add('visible');
   } else {
     brandName.classList.remove('visible');
   }
 
-  // Animate font size from 2rem to 4rem
+  // Animate font size & spacing
   const minFont = 2;
   const maxFont = 5;
-  const fontSize = Math.min(maxFont, Math.max(minFont, minFont + currentScroll / 150));
-
-  // Animate letter spacing (kerning) from 0.05em to 0.3em
   const minSpacing = 0.05;
-  const maxSpacing = 0.52;
-  const spacing = Math.min(maxSpacing, Math.max(minSpacing, minSpacing + currentScroll / 500));
+  const maxSpacing = 0.7;
+  const progress = Math.min(1, scrollY / 900);
+  const fontSize = minFont + (maxFont - minFont) * progress;
+  const spacing = minSpacing + (maxSpacing - minSpacing) * progress;
 
   brandName.style.fontSize = `${fontSize}rem`;
   brandName.style.letterSpacing = `${spacing}em`;
+}
 
-  lastScrollY = currentScroll;
+window.addEventListener('scroll', () => {
+  lastScrollY = window.scrollY;
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updateBrandName(lastScrollY);
+      ticking = false;
+    });
+
+    ticking = true;
+  }
 });
 
   wrapper.appendChild(img);
