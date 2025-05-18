@@ -38,20 +38,15 @@ const logo = document.querySelector('.logo');
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
-
-  // Set the scroll range (0 to 200px)
   const maxScroll = 500;
-
-  // Calculate how far through the range we are (0 = top, 1 = hidden)
   const progress = Math.min(1, scrollY / maxScroll);
-
-  // Calculate opacity and vertical shift
   const opacity = 1 - progress;
-  const translateY = -progress * 40; // Move up to -40px
+  const translateY = -progress * 40;
 
   logo.style.opacity = opacity;
   logo.style.transform = `translateY(${translateY}px)`;
 });
+
 
 const brandName = document.querySelector('.brand-name');
 let lastScrollY = 0;
