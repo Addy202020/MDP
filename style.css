@@ -213,7 +213,7 @@ body.about-page {
 }
 
 .about-left {
-  width: 50%;
+  width: 60%;
   display: flex;
   align-items: flex-start; /* ⬅ Align to top */
   justify-content: center;
@@ -230,7 +230,7 @@ body.about-page {
 }
 
 .workflow-panel {
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -238,19 +238,46 @@ body.about-page {
 
 .workflow-panel h1 {
   margin-bottom: 30px;
-  font-size: 2rem;
+  margin-top: 40px
 }
 
 .workflow-item {
   margin-bottom: 25px;
-  width: 100%;
+  width: 65%;
+  font-size: 1.4rem;
+}
+
+.workflow-item small {
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.about-right h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+}
+
+.workflow-item span {
+  display: block;
+  margin-bottom: 10px;
+}
+.bar {
+  background: #444;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  background: #0cf;
+  transition: width 0.5s ease;
 }
 
 .photo-mask-wrapper {
   position: relative;
   display: inline-block;
   width: 100%;
-  max-width: 40vw;
+  max-width: 32vw;
   margin-top: 40px;
 }
 
@@ -279,35 +306,6 @@ body.about-page {
   mask-repeat: no-repeat;
 }
 
-
-.about-right h1 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
-
-.workflow-item {
-  margin-bottom: 25px;
-}
-.workflow-item span {
-  display: block;
-  margin-bottom: 5px;
-}
-.bar {
-  background: #444;
-  height: 10px;
-  border-radius: 5px;
-  overflow: hidden;
-}
-.fill {
-  height: 100%;
-  background: #0cf;
-  transition: width 0.5s ease;
-}
-.workflow-item small {
-  color: #ccc;
-  font-size: 0.85rem;
-}
-
 /* Video wrapper */
 .experience-strip-wrapper {
   margin-top: 40px;
@@ -315,6 +313,16 @@ body.about-page {
   background: #000000;
   z-index: 2;
   position: relative;
+}
+
+.experience-title {
+  text-align: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  font-family: 'BankGothic', sans-serif;
 }
 
 /* Responsive Video */

@@ -98,6 +98,36 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+let touchStartX = 0;
+let touchEndX = 0;
+
+lightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, false);
+
+lightbox.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipeGesture();
+}, false);
+
+function handleSwipeGesture() {
+  if (!lightbox.classList.contains('show')) return;
+
+  const swipeDistance = touchEndX - touchStartX;
+
+  if (swipeDistance > 50) {
+    // Swipe right → Previous
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    lightboxImg.src = galleryImages[currentImageIndex].src;
+    updateActiveImage();
+  } else if (swipeDistance < -50) {
+    // Swipe left → Next
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    lightboxImg.src = galleryImages[currentImageIndex].src;
+    updateActiveImage();
+  }
+}
+
 const logo = document.querySelector('.logo');
 
 window.addEventListener('scroll', () => {
