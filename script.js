@@ -34,6 +34,70 @@ imageNames.forEach((imageName) => {
 
 let lastScrollTop = 0;
 
+let currentImageIndex = -1;
+const galleryImages = Array.from(document.querySelectorAll('.gallery-img'));
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+// Click on any image
+galleryImages.forEach((img, index) => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add('show');
+    document.querySelector('.gallery').classList.add('dimmed');
+    img.classList.add('active-image');
+    currentImageIndex = index;
+  });
+});
+
+// Click outside the image to close
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) {
+    lightbox.classList.remove('show');
+    document.querySelector('.gallery').classList.remove('dimmed');
+    document.querySelectorAll('.gallery-img').forEach(img => {
+      img.classList.remove('active-image');
+    });
+  }
+});
+
+// Close popup with Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('show')) {
+    lightbox.classList.remove('show');
+    document.querySelector('.gallery').classList.remove('dimmed');
+    document.querySelectorAll('.gallery-img').forEach(img => {
+      img.classList.remove('active-image');
+    });
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('show')) return;
+
+  if (e.key === 'ArrowLeft') {
+    // Go to previous image
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    lightboxImg.src = galleryImages[currentImageIndex].src;
+    updateActiveImage();
+  }
+
+  if (e.key === 'ArrowRight') {
+    // Go to next image
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    lightboxImg.src = galleryImages[currentImageIndex].src;
+    updateActiveImage();
+  }
+
+  if (e.key === 'Escape') {
+    lightbox.classList.remove('show');
+    document.querySelector('.gallery').classList.remove('dimmed');
+    galleryImages.forEach(img => img.classList.remove('active-image'));
+    currentImageIndex = -1;
+  }
+});
+
 const logo = document.querySelector('.logo');
 
 window.addEventListener('scroll', () => {
