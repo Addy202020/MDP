@@ -64,7 +64,7 @@ function updateBrandName(scrollY) {
   const minFont = 2;
   const maxFont = 5;
   const minSpacing = 0.05;
-  const maxSpacing = 0.7;
+  const maxSpacing = 0.55;
   const progress = Math.min(1, scrollY / 900);
   const fontSize = minFont + (maxFont - minFont) * progress;
   const spacing = minSpacing + (maxSpacing - minSpacing) * progress;
@@ -84,6 +84,10 @@ window.addEventListener('scroll', () => {
 
     ticking = true;
   }
+});
+
+document.querySelector('.brand-name').addEventListener('click', () => {
+  window.location.href = 'about.html';
 });
 
   wrapper.appendChild(img);

@@ -49,11 +49,18 @@ body {
   font-size: 2rem;
   letter-spacing: 0.05em;
   font-family: 'BankGothic', sans-serif;
+  cursor: pointer; /* 👈 Add this */
   opacity: 0;
   transition: 
     opacity 0.3s ease-out,
     font-size 0.3s ease-out,
     letter-spacing 0.3s ease-out;
+
+}
+
+.brand-name a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .brand-name.visible {
@@ -145,4 +152,148 @@ body {
   .gallery {
     column-count: 1;
   }
+}
+
+body.about-page {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'BankGothic', sans-serif;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-height: calc(100vh - 140px); /* leave space for video + breathing */
+}
+
+.about-page-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+}
+
+.about-left {
+  width: 50%;
+  display: flex;
+  align-items: flex-start; /* ⬅ Align to top */
+  justify-content: center;
+  position: relative; /* For z-index layering */
+  z-index: 1;
+}
+.about-right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.workflow-panel {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.workflow-panel h1 {
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.workflow-item {
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.photo-mask-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 40vw;
+  margin-top: 40px;
+}
+
+.about-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-photo.base {
+  filter: grayscale(100%);
+  position: relative;
+  z-index: 1;
+}
+
+.about-photo.hover-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+
+  -webkit-mask-image: radial-gradient(circle 0px at -9999px -9999px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(circle 0px at -9999px -9999px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+
+.about-right h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.workflow-item {
+  margin-bottom: 25px;
+}
+.workflow-item span {
+  display: block;
+  margin-bottom: 5px;
+}
+.bar {
+  background: #444;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  background: #0cf;
+  transition: width 0.5s ease;
+}
+.workflow-item small {
+  color: #ccc;
+  font-size: 0.85rem;
+}
+
+/* Video wrapper */
+.experience-strip-wrapper {
+  margin-top: 40px;
+  padding-bottom: 20px;
+  background: #000000;
+  z-index: 2;
+  position: relative;
+}
+
+/* Responsive Video */
+.experience-strip {
+  width: 100%;
+  max-height: 100px;
+  height: auto;
+  object-fit: cover; /* ⬅ No cropping */
+  display: block;
+  pointer-events: none;
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+@keyframes scroll-strip {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
