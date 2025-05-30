@@ -31,9 +31,9 @@ function updateBrandName(scrollY) {
 
   // Animate font size & spacing
   const minFont = 2;
-  const maxFont = 5;
+  const maxFont = 4.5;
   const minSpacing = 0.05;
-  const maxSpacing = 0.5;
+  const maxSpacing = 0.45;
   const progress = Math.min(1, scrollY / 900);
   const fontSize = minFont + (maxFont - minFont) * progress;
   const spacing = minSpacing + (maxSpacing - minSpacing) * progress;
