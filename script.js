@@ -41,7 +41,7 @@ function updateBrandName(scrollY) {
   brandName.style.fontSize = `${fontSize}rem`;
   brandName.style.letterSpacing = `${spacing}em`;
 
-  // ✅ Move brand name downward slightly on scroll
+  // Move brand name downward slightly on scroll
   const moveY = progress * 100;
   brandName.style.transform = `translateY(${moveY}px)`;
 }
@@ -63,9 +63,11 @@ document.querySelector('.brand-name').addEventListener('click', () => {
   window.location.href = 'about.html';
 });
 
+// --- START: LAZY LOADING LOGIC ---
+
 // Folder where images are stored
 const folderPath = 'images';
-const totalImages = 898;
+const totalImages = 1014;
 
 // Generate image file names
 const imageNames = Array.from({ length: totalImages }, (_, i) => `image${i + 1}.webp`);
@@ -79,111 +81,146 @@ function shuffle(array) {
 }
 shuffle(imageNames);
 
-// Load and render images inside gallery
+// Get the gallery container
 const gallery = document.getElementById('gallery');
 
+// Create a new Intersection Observer
+// This will watch for elements entering the viewport
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    // If an element is intersecting (i.e., visible or about to be visible)
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      // Take the image path from the 'data-src' attribute and put it in 'src'
+      // This is what actually triggers the image to load
+      img.src = img.dataset.src;
+      
+      // Once loaded, we don't need to watch this image anymore
+      observer.unobserve(img);
+    }
+  });
+}, { 
+  // Options: Load images when they are 200px away from the bottom of the viewport
+  rootMargin: "0px 0px 200px 0px" 
+});
+
+// Create and append images to the gallery
 imageNames.forEach((imageName) => {
   const wrapper = document.createElement('div');
   wrapper.classList.add('img-wrapper');
 
   const img = document.createElement('img');
-  img.src = `${folderPath}/${imageName}`;
+  // IMPORTANT: We set 'data-src' instead of 'src' initially.
+  // The browser won't load an image from 'data-src'.
+  img.dataset.src = `${folderPath}/${imageName}`;
   img.alt = 'Design work';
-  img.loading = 'lazy';
   img.classList.add('gallery-img');
 
   wrapper.appendChild(img);
   gallery.appendChild(wrapper);
+
+  // Tell the observer to start watching this new image
+  observer.observe(img);
 });
 
-// All DOM for images is ready, now select and add listeners
-let currentImageIndex = -1;
-const galleryImages = Array.from(document.querySelectorAll('.gallery-img'));
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightbox-img');
+// --- END: LAZY LOADING LOGIC ---
 
-// Click on any image
-galleryImages.forEach((img, index) => {
-  img.addEventListener('click', () => {
-    lightboxImg.src = img.src;
-    lightbox.classList.add('show');
-    document.querySelector('.gallery').classList.add('dimmed');
-    img.classList.add('active-image');
-    currentImageIndex = index;
-  });
-});
 
-// Click outside the image to close
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) {
-    lightbox.classList.remove('show');
-    document.querySelector('.gallery').classList.remove('dimmed');
-    galleryImages.forEach(img => img.classList.remove('active-image'));
-    currentImageIndex = -1;
-  }
-});
+// --- START: LIGHTBOX LOGIC ---
+// This part remains mostly the same, but it's placed after the image creation.
 
-// Close popup with Escape key and handle arrow navigation
-document.addEventListener('keydown', (e) => {
-  if (!lightbox.classList.contains('show')) return;
+// We need a small delay to ensure the DOM has the new images before we select them
+setTimeout(() => {
+    let currentImageIndex = -1;
+    const galleryImages = Array.from(document.querySelectorAll('.gallery-img'));
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
 
-  if (e.key === 'Escape') {
-    lightbox.classList.remove('show');
-    document.querySelector('.gallery').classList.remove('dimmed');
-    galleryImages.forEach(img => img.classList.remove('active-image'));
-    currentImageIndex = -1;
-  }
+    // Click on any image
+    galleryImages.forEach((img, index) => {
+      img.addEventListener('click', () => {
+        // This works because by the time you can click an image,
+        // the Intersection Observer will have already set its 'src'.
+        if (img.src) {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('show');
+            document.querySelector('.gallery').classList.add('dimmed');
+            img.classList.add('active-image');
+            currentImageIndex = index;
+        }
+      });
+    });
 
-  if (e.key === 'ArrowLeft') {
-    // Go to previous image
-    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-    lightboxImg.src = galleryImages[currentImageIndex].src;
-    updateActiveImage();
-  }
+    // Click outside the image to close
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('show');
+        document.querySelector('.gallery').classList.remove('dimmed');
+        galleryImages.forEach(img => img.classList.remove('active-image'));
+        currentImageIndex = -1;
+      }
+    });
 
-  if (e.key === 'ArrowRight') {
-    // Go to next image
-    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-    lightboxImg.src = galleryImages[currentImageIndex].src;
-    updateActiveImage();
-  }
-});
+    // Helper to update active image class
+    function updateActiveImage() {
+        galleryImages.forEach(img => img.classList.remove('active-image'));
+        if (currentImageIndex >= 0 && galleryImages[currentImageIndex]) {
+            galleryImages[currentImageIndex].classList.add('active-image');
+        }
+    }
 
-// Helper to update active image class
-function updateActiveImage() {
-  galleryImages.forEach(img => img.classList.remove('active-image'));
-  if (currentImageIndex >= 0 && galleryImages[currentImageIndex]) {
-    galleryImages[currentImageIndex].classList.add('active-image');
-  }
-}
+    // Close popup with Escape key and handle arrow navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('show')) return;
 
-// Touch swipe for lightbox navigation
-let touchStartX = 0;
-let touchEndX = 0;
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('show');
+        document.querySelector('.gallery').classList.remove('dimmed');
+        galleryImages.forEach(img => img.classList.remove('active-image'));
+        currentImageIndex = -1;
+      }
 
-lightbox.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-}, false);
+      if (e.key === 'ArrowLeft') {
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        lightboxImg.src = galleryImages[currentImageIndex].src;
+        updateActiveImage();
+      }
 
-lightbox.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipeGesture();
-}, false);
+      if (e.key === 'ArrowRight') {
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        lightboxImg.src = galleryImages[currentImageIndex].src;
+        updateActiveImage();
+      }
+    });
 
-function handleSwipeGesture() {
-  if (!lightbox.classList.contains('show')) return;
+    // Touch swipe for lightbox navigation
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-  const swipeDistance = touchEndX - touchStartX;
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
 
-  if (swipeDistance > 50) {
-    // Swipe right → Previous
-    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-    lightboxImg.src = galleryImages[currentImageIndex].src;
-    updateActiveImage();
-  } else if (swipeDistance < -50) {
-    // Swipe left → Next
-    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-    lightboxImg.src = galleryImages[currentImageIndex].src;
-    updateActiveImage();
-  }
-}
+    lightbox.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipeGesture();
+    }, false);
+
+    function handleSwipeGesture() {
+      if (!lightbox.classList.contains('show')) return;
+
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (swipeDistance > 50) { // Swipe right → Previous
+        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+        lightboxImg.src = galleryImages[currentImageIndex].src;
+        updateActiveImage();
+      } else if (swipeDistance < -50) { // Swipe left → Next
+        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+        lightboxImg.src = galleryImages[currentImageIndex].src;
+        updateActiveImage();
+      }
+    }
+}, 100); // The 100ms timeout ensures all images are in the DOM before adding listeners.
+
+// --- END: LIGHTBOX LOGIC ---
