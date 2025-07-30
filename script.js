@@ -67,7 +67,7 @@ document.querySelector('.brand-name').addEventListener('click', () => {
 
 // Folder where images are stored
 const folderPath = 'images';
-const totalImages = 999;
+const totalImages = 1015;
 
 // Generate image file names
 const imageNames = Array.from({ length: totalImages }, (_, i) => `image${i + 1}.webp`);
